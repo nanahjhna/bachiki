@@ -1,5 +1,5 @@
-import 'dart:io'; // 📌 플랫폼 확인용 패키지 추가
-import 'package:flutter/foundation.dart'; // 📌 웹 환경 체크용 패키지 추가
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart'; // 📌 광고 패키지 추가
 
@@ -11,11 +11,18 @@ import 'screens/character_view.dart';
 import 'screens/stage_select_view.dart';
 import 'screens/game_play_view.dart';
 import 'screens/result_view.dart';
+import 'screens/loading_view.dart';
+import 'screens/login_view.dart';
+import 'screens/account_link_view.dart';
+import 'screens/inventory_view.dart';
+import 'screens/quest_view.dart';
+import 'screens/notice_view.dart';
+import 'utils/app_texts.dart';
 
-void main() async { // 📌 비동기 처리를 위해 async 추가
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AppTexts.loadLanguage();
 
-  // 📌 안드로이드 및 iOS 모바일 환경에서만 광고 SDK 초기화
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     await MobileAds.instance.initialize();
   }
@@ -29,11 +36,34 @@ class BachikiGameApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Boss Game Flow',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: '/',
+      title: 'Bachiki',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF5C48D3),
+          brightness: Brightness.dark,
+        ),
+        scaffoldBackgroundColor: const Color(0xFF151329),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          centerTitle: true,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(0, 52),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            textStyle: const TextStyle(fontWeight: FontWeight.w800),
+          ),
+        ),
+      ),
+      initialRoute: '/loading',
       routes: {
         '/': (context) => const TitleView(),
+        '/loading': (context) => const LoadingView(),
+        '/login': (context) => const LoginView(),
+        '/accountLink': (context) => const AccountLinkView(),
         '/main': (context) => const MainScreen(),
         '/shop': (context) => const ShopView(),
         '/settings': (context) => const SettingsView(),
@@ -41,6 +71,9 @@ class BachikiGameApp extends StatelessWidget {
         '/stageSelect': (context) => const StageSelectView(),
         '/gamePlay': (context) => const GamePlayView(),
         '/result': (context) => const ResultView(),
+        '/inventory': (context) => const InventoryView(),
+        '/quest': (context) => const QuestView(),
+        '/notice': (context) => const NoticeView(),
       },
     );
   }

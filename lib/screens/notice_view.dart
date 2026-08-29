@@ -1,0 +1,8 @@
+import 'package:flutter/material.dart';
+
+class NoticeView extends StatefulWidget { const NoticeView({super.key}); @override State<NoticeView> createState() => _NoticeViewState(); }
+class _NoticeViewState extends State<NoticeView> with SingleTickerProviderStateMixin { late final TabController _tab = TabController(length: 2, vsync: this); bool received = false; @override void dispose() { _tab.dispose(); super.dispose(); }
+  @override Widget build(BuildContext context) => Scaffold(appBar: AppBar(title: const Text('NOTICE & EVENT')), body: Column(children: [TabBar(controller: _tab, tabs: const [Tab(text: '공지사항'), Tab(text: '출석 이벤트')]), Expanded(child: TabBarView(controller: _tab, children: [_notices(), _attendance()]))]));
+  Widget _notices() => ListView(children: ['정식 출시 기념 이벤트', '8월 업데이트 안내', '서비스 이용 약관'].asMap().entries.map((e) => ExpansionTile(title: Text(e.value), subtitle: const Text('2026.08.29'), children: const [Padding(padding: EdgeInsets.all(16), child: Text('바치키를 플레이해주셔서 감사합니다. 새로운 이벤트와 보상을 확인하세요.'))])).toList());
+  Widget _attendance() => Padding(padding: const EdgeInsets.all(18), child: Column(children: [const Text('7일 출석 보상', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)), const SizedBox(height: 18), GridView.count(shrinkWrap: true, crossAxisCount: 4, children: List.generate(7, (i) => Card(color: i == 0 ? const Color(0xFFFFD166) : null, child: Center(child: Text('${i + 1}일\n🎁', textAlign: TextAlign.center))))), const Spacer(), SizedBox(width: double.infinity, child: ElevatedButton(onPressed: received ? null : () => setState(() => received = true), child: Text(received ? '수령 완료' : '오늘 보상 받기')))]));
+}

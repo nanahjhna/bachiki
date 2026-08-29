@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class PauseOverlay extends StatelessWidget {
-  const PauseOverlay({super.key});
+  const PauseOverlay({super.key, this.onResume, this.onPause});
+  final VoidCallback? onResume;
+  final VoidCallback? onPause;
 
   @override
   Widget build(BuildContext context) {
+    onPause?.call();
     return Dialog(
       backgroundColor: Colors.black54,
       child: Container(
@@ -19,14 +22,14 @@ class PauseOverlay extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              '일시정지',
+              'PAUSED',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 // 팝업 닫기 (게임 재개)
-                Navigator.pop(context);
+                Navigator.pop(context); onResume?.call();
               },
               child: const Text('게임 계속하기'),
             ),

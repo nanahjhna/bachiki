@@ -15,7 +15,7 @@ class MainLobbyView extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(backgroundColor: Colors.teal, padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20)),
-              onPressed: () => Navigator.pushNamed(context, '/stage_select'),
+              onPressed: () => Navigator.pushNamed(context, '/stageSelect'),
               child: const Text('STAGE BATTLE', style: TextStyle(fontSize: 20, color: Colors.white)),
             ),
           ],
