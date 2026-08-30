@@ -1,17 +1,21 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppTexts {
   static String _currentLang = '한국어';
+  static final ValueNotifier<String> languageNotifier = ValueNotifier(_currentLang);
 
   // 📌 저장된 언어 불러오기 (앱이 켜질 때 호출)
   static Future<void> loadLanguage() async {
     final prefs = await SharedPreferences.getInstance();
     _currentLang = prefs.getString('selected_language') ?? '한국어';
+    languageNotifier.value = _currentLang;
   }
 
   // 📌 언어 변경 및 저장하기
   static Future<void> setLanguage(String lang) async {
     _currentLang = lang;
+    languageNotifier.value = lang;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('selected_language', lang);
   }
@@ -70,6 +74,10 @@ class AppTexts {
       'retry': '다시 도전',
       'nextStage': '다음 스테이지',
       'coins': '코인',
+      'inventory': '인벤토리',
+      'quest': '퀘스트',
+      'notice': '공지사항',
+      'account': '계정 연동',
     },
     'English': {
       'gameStart': 'Start Game',
@@ -121,6 +129,10 @@ class AppTexts {
       'retry': 'Try Again',
       'nextStage': 'Next Stage',
       'coins': 'Coins',
+      'inventory': 'Inventory',
+      'quest': 'Quest',
+      'notice': 'Notice',
+      'account': 'Account Link',
     },
     '日本語': {
       'gameStart': 'ゲーム開始',
@@ -172,13 +184,23 @@ class AppTexts {
       'retry': 'もう一度',
       'nextStage': '次のステージ',
       'coins': 'コイン',
+      'inventory': 'インベントリ',
+      'quest': 'クエスト',
+      'notice': 'お知らせ',
+      'account': 'アカウント連携',
     },
   };
 
   // 📌 텍스트를 가져오는 함수
   static String get(String key) {
-    return _texts[_currentLang]?[key] ?? _texts['한국어']?[key] ?? key;
+    return _additionalTexts[_currentLang]?[key] ?? _texts[_currentLang]?[key] ?? _additionalTexts['한국어']?[key] ?? _texts['한국어']?[key] ?? key;
   }
+
+  static const Map<String, Map<String, String>> _additionalTexts = {
+    '한국어': {'login': '로그인', 'guest': '게스트로 시작', 'googleLogin': 'Google 로그인', 'appleLogin': 'Apple 로그인', 'loginGuide': '게임 데이터를 안전하게 보관하세요.', 'stage': '스테이지', 'boss': '보스', 'timeLeft': '남은 시간', 'attack': '공격', 'inventory': '인벤토리', 'all': '전체', 'equipment': '장비', 'consumable': '소모품', 'useItem': '선택 아이템 사용', 'unequip': '장비 해제', 'equipped': '현재 착용 중', 'notEquipped': '미착용', 'characterIntro': '캐릭터 소개', 'skill': '스킬', 'stats': '능력치', 'quest': '퀘스트', 'dailyQuest': '일일 퀘스트', 'achievement': '업적', 'claimReward': '보상 받기', 'claimed': '수령 완료', 'notice': '공지사항', 'attendance': '출석 이벤트', 'account': '계정 연동', 'logout': '로그아웃', 'linkGoogle': 'Google 계정으로 연동', 'loading': '데이터를 불러오는 중입니다...', 'settings': '설정', 'soundEffects': '효과음', 'bgmVolume': 'BGM 볼륨', 'sfxVolume': '효과음 볼륨', 'stageBattle': '스테이지 전투', 'shop': '상점'},
+    'English': {'login': 'Login', 'guest': 'Continue as Guest', 'googleLogin': 'Sign in with Google', 'appleLogin': 'Sign in with Apple', 'loginGuide': 'Keep your game data safe.', 'stage': 'Stage', 'boss': 'Boss', 'timeLeft': 'Time Left', 'attack': 'Attack', 'inventory': 'Inventory', 'all': 'All', 'equipment': 'Equipment', 'consumable': 'Consumables', 'useItem': 'Use Selected Item', 'unequip': 'Unequip', 'equipped': 'Equipped', 'notEquipped': 'Not equipped', 'characterIntro': 'Character Info', 'skill': 'Skill', 'stats': 'Stats', 'quest': 'Quest', 'dailyQuest': 'Daily Quest', 'achievement': 'Achievements', 'claimReward': 'Claim Reward', 'claimed': 'Claimed', 'notice': 'Notice', 'attendance': 'Attendance Event', 'account': 'Account Link', 'logout': 'Log Out', 'linkGoogle': 'Link Google Account', 'loading': 'Loading data...', 'settings': 'Settings', 'soundEffects': 'Sound Effects', 'bgmVolume': 'BGM Volume', 'sfxVolume': 'SFX Volume', 'stageBattle': 'Stage Battle', 'shop': 'Shop'},
+    '日本語': {'login': 'ログイン', 'guest': 'ゲストで始める', 'googleLogin': 'Googleでログイン', 'appleLogin': 'Appleでログイン', 'loginGuide': 'ゲームデータを安全に保管します。', 'stage': 'ステージ', 'boss': 'ボス', 'timeLeft': '残り時間', 'attack': '攻撃', 'inventory': 'インベントリ', 'all': 'すべて', 'equipment': '装備', 'consumable': '消耗品', 'useItem': '選択アイテムを使う', 'unequip': '装備を外す', 'equipped': '装備中', 'notEquipped': '未装備', 'characterIntro': 'キャラクター紹介', 'skill': 'スキル', 'stats': '能力値', 'quest': 'クエスト', 'dailyQuest': 'デイリークエスト', 'achievement': '実績', 'claimReward': '報酬を受け取る', 'claimed': '受取済み', 'notice': 'お知らせ', 'attendance': '出席イベント', 'account': 'アカウント連携', 'logout': 'ログアウト', 'linkGoogle': 'Googleアカウントと連携', 'loading': 'データを読み込み中...', 'settings': '設定', 'soundEffects': '効果音', 'bgmVolume': 'BGM音量', 'sfxVolume': '効果音音量', 'stageBattle': 'ステージバトル', 'shop': 'ショップ'},
+  };
 
   // 📌 초 단위 시간 포맷 (예: 12.34초 / 12.34s / 12.34秒)
   static String formatTimeSec(int seconds, int centiseconds) {

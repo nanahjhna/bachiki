@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../widgets/game_bottom_navigation.dart';
+import '../widgets/game_header.dart';
 
 class QuestView extends StatefulWidget {
   const QuestView({super.key});
@@ -19,7 +21,7 @@ class _QuestViewState extends State<QuestView> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('QUESTS & ACHIEVEMENTS')),
+    appBar: const GameHeader(titleKey: 'quest'),
     body: Column(
       children: [
         TabBar(
@@ -40,6 +42,7 @@ class _QuestViewState extends State<QuestView> with SingleTickerProviderStateMix
         ),
       ],
     ),
+    bottomNavigationBar: const GameBottomNavigation(),
   );
 
   Widget _list(String type, int done) => ListView.builder(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../widgets/game_bottom_navigation.dart';
+import '../widgets/game_header.dart';
 
 class CharacterView extends StatelessWidget {
   const CharacterView({super.key, this.embedded = false});
@@ -10,10 +12,18 @@ class CharacterView extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
+          const Spacer(),
+          const Icon(Icons.person, size: 150, color: Color(0xFF69B8FF)),
           const Text('Blue Striker', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900)),
           const SizedBox(height: 6),
           const Text('Lv. 3  •  Power 120'),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
+          const Align(alignment: Alignment.centerLeft, child: Text('캐릭터 소개', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))),
+          const SizedBox(height: 6),
+          const Text('빠른 연속 공격으로 보스의 빈틈을 파고드는 근접 전사입니다.'),
+          const SizedBox(height: 12),
+          const Align(alignment: Alignment.centerLeft, child: Text('스킬: Quick Strike · 공격력 120 · 방어력 80 · 속도 95')),
+          const SizedBox(height: 20),
           const Align(
             alignment: Alignment.centerLeft,
             child: Text('EQUIPPED PERKS', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -26,16 +36,11 @@ class CharacterView extends StatelessWidget {
               Expanded(child: _Perk(icon: Icons.favorite, name: 'Vitality')),
             ],
           ),
-          const Spacer(),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('캐릭터와 퍽이 저장되었습니다.')),
-                );
-              },
-              child: const Text('CONFIRM'),
+              onPressed: () => Navigator.pushNamed(context, '/inventory'),
+              child: const Text('INVENTORY'),
             ),
           ),
         ],
@@ -45,8 +50,9 @@ class CharacterView extends StatelessWidget {
     return embedded
         ? content
         : Scaffold(
-      appBar: AppBar(title: const Text('CHARACTER')),
+      appBar: const GameHeader(titleKey: 'character'),
       body: content,
+      bottomNavigationBar: const GameBottomNavigation(currentIndex: 3),
     );
   }
 }

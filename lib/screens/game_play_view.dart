@@ -28,6 +28,7 @@ class _GamePlayViewState extends State<GamePlayView> {
     final stage = ModalRoute.of(context)?.settings.arguments as int? ?? 1;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('STAGE $stage'),
         actions: [
           // 상단 앱바에 일시정지 버튼 배치

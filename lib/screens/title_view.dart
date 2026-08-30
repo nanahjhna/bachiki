@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/user_session.dart';
 
 class TitleView extends StatelessWidget {
   const TitleView({super.key});
@@ -16,8 +17,10 @@ class TitleView extends StatelessWidget {
             const Text('BOSS RUSH', style: TextStyle(letterSpacing: 6, color: Color(0xFFFFD166), fontWeight: FontWeight.bold)),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/login');
+              onPressed: () async {
+                final provider = await UserSession.loginProvider();
+                if (!context.mounted) return;
+                Navigator.pushReplacementNamed(context, provider == null ? '/login' : '/main');
               },
               child: const Text('TAP TO START'),
             ),
