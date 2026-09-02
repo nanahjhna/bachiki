@@ -25,11 +25,14 @@ class ResultView extends StatelessWidget {
                   style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w900),
                 ),
                 const SizedBox(height: 8),
-                Text('STAGE ${data['stage']}'),
+                Text('${AppTexts.get('stage')} ${data['stage']}'),
                 if (won)
-                  const Padding(
-                    padding: EdgeInsets.only(top: 16),
-                    child: Text('+100 COINS', style: TextStyle(fontSize: 20, color: Color(0xFFFFD166))),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Text(
+                      '+100 ${AppTexts.get('coins')}',
+                      style: const TextStyle(fontSize: 20, color: Color(0xFFFFD166), fontWeight: FontWeight.bold),
+                    ),
                   ),
                 const SizedBox(height: 20),
                 ElevatedButton(

@@ -18,20 +18,91 @@ class _InventoryViewState extends State<InventoryView> {
 
   @override
   Widget build(BuildContext context) {
-    final content = Column(children: [
-      Padding(padding: const EdgeInsets.all(12), child: SegmentedButton<int>(segments: [ButtonSegment(value: 0, label: Text(AppTexts.get('all'))), ButtonSegment(value: 1, label: Text(AppTexts.get('equipment'))), ButtonSegment(value: 2, label: Text(AppTexts.get('consumable')))], selected: {_category}, onSelectionChanged: (v) => setState(() => _category = v.first))),
-      Expanded(child: ListView.builder(padding: const EdgeInsets.symmetric(horizontal: 16), itemCount: 8, itemBuilder: (_, i) => _item(i))),
-      if (_selected != null) Padding(padding: const EdgeInsets.all(16), child: SizedBox(width: double.infinity, child: ElevatedButton(onPressed: _action, child: Text(_equipped.contains(_selected) ? AppTexts.get('unequip') : AppTexts.get('useItem'))))),
-    ]);
+    final content = SafeArea(
+      top: widget.embedded,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: SegmentedButton<int>(
+              segments: [
+                ButtonSegment(value: 0, label: Text(AppTexts.get('all'))),
+                ButtonSegment(value: 1, label: Text(AppTexts.get('equipment'))),
+                ButtonSegment(value: 2, label: Text(AppTexts.get('consumable'))),
+              ],
+              selected: {_category},
+              onSelectionChanged: (v) => setState(() => _category = v.first),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: 8,
+              itemBuilder: (_, i) => _item(i),
+            ),
+          ),
+          if (_selected != null)
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _action,
+                  child: Text(
+                    _equipped.contains(_selected)
+                        ? AppTexts.get('unequip')
+                        : AppTexts.get('useItem'),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
 
     return widget.embedded
         ? content
         : Scaffold(
-      appBar: const GameHeader(titleKey: 'inventory'),
-      body: content,
-      bottomNavigationBar: const GameBottomNavigation(currentIndex: 2), // 인벤토리 탭 인덱스 2로 맞춤
+            appBar: const GameHeader(titleKey: 'inventory'),
+            body: content,
+            bottomNavigationBar: const GameBottomNavigation(currentIndex: 1),
+          );
+  }
+
+  Widget _item(int i) {
+    final equipped = _equipped.contains(i);
+    return Card(
+      child: CheckboxListTile(
+        value: _selected == i,
+        onChanged: (_) => setState(() => _selected = _selected == i ? null : i),
+        secondary: CircleAvatar(child: Icon(i.isEven ? Icons.shield : Icons.healing)),
+        title: Text('${AppTexts.get('item')} ${i + 1}'),
+        subtitle: Text(
+          equipped
+              ? '${AppTexts.get('equipped')} · +${(i + 1) * 5}'
+              : AppTexts.get('notEquipped'),
+        ),
+        controlAffinity: ListTileControlAffinity.trailing,
+      ),
     );
   }
-  Widget _item(int i) { final equipped = _equipped.contains(i); return Card(child: CheckboxListTile(value: _selected == i, onChanged: (_) => setState(() => _selected = _selected == i ? null : i), secondary: CircleAvatar(child: Icon(i.isEven ? Icons.shield : Icons.healing)), title: Text('${AppTexts.get('inventory')} ${i + 1}'), subtitle: Text(equipped ? '${AppTexts.get('equipped')} · +${(i + 1) * 5}' : AppTexts.get('notEquipped')), controlAffinity: ListTileControlAffinity.trailing)); }
-  void _action() { final item = _selected!; setState(() { _equipped.contains(item) ? _equipped.remove(item) : _equipped.add(item); }); ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(_equipped.contains(item) ? '아이템을 착용했습니다.' : '아이템을 해제했습니다.'))); }
+
+  void _action() {
+    final item = _selected!;
+    final willEquip = !_equipped.contains(item);
+    setState(() {
+      if (willEquip) {
+        _equipped.add(item);
+      } else {
+        _equipped.remove(item);
+      }
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          willEquip ? AppTexts.get('itemEquipped') : AppTexts.get('itemUnequipped'),
+        ),
+      ),
+    );
+  }
 }

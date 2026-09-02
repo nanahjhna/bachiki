@@ -69,7 +69,10 @@ class _StageSelectViewState extends State<StageSelectView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('STAGE ${stage.stageNumber}', style: const TextStyle(color: Color(0xFFFFD166), fontWeight: FontWeight.bold)),
+                      Text(
+                        '${AppTexts.get('stage')} ${stage.stageNumber}',
+                        style: const TextStyle(color: Color(0xFFFFD166), fontWeight: FontWeight.bold),
+                      ),
                       const SizedBox(height: 2),
                       Text(stage.bossName, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w800, color: Colors.white)),
                       const SizedBox(height: 8),

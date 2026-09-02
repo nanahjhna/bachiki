@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/app_texts.dart';
 import '../widgets/game_bottom_navigation.dart';
 import '../widgets/game_header.dart';
 
@@ -8,52 +9,73 @@ class CharacterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final content = Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          const Spacer(),
-          const Icon(Icons.person, size: 150, color: Color(0xFF69B8FF)),
-          const Text('Blue Striker', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900)),
-          const SizedBox(height: 6),
-          const Text('Lv. 3  •  Power 120'),
-          const SizedBox(height: 16),
-          const Align(alignment: Alignment.centerLeft, child: Text('캐릭터 소개', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18))),
-          const SizedBox(height: 6),
-          const Text('빠른 연속 공격으로 보스의 빈틈을 파고드는 근접 전사입니다.'),
-          const SizedBox(height: 12),
-          const Align(alignment: Alignment.centerLeft, child: Text('스킬: Quick Strike · 공격력 120 · 방어력 80 · 속도 95')),
-          const SizedBox(height: 20),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text('EQUIPPED PERKS', style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          const SizedBox(height: 10),
-          const Row(
-            children: [
-              Expanded(child: _Perk(icon: Icons.flash_on, name: 'Quick Strike')),
-              SizedBox(width: 10),
-              Expanded(child: _Perk(icon: Icons.favorite, name: 'Vitality')),
-            ],
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/inventory'),
-              child: const Text('INVENTORY'),
+    final content = SafeArea(
+      top: embedded,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const Spacer(),
+            const Icon(Icons.person, size: 150, color: Color(0xFF69B8FF)),
+            Text(
+              AppTexts.get('characterName'),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900),
             ),
-          ),
-        ],
+            const SizedBox(height: 6),
+            Text('${AppTexts.get('level')} 3  •  ${AppTexts.get('power')} 120'),
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                AppTexts.get('characterIntro'),
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(AppTexts.get('characterDesc')),
+            const SizedBox(height: 12),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                '${AppTexts.get('skill')}: ${AppTexts.get('quickStrike')} · ${AppTexts.get('statAtk')} 120 · ${AppTexts.get('statDef')} 80 · ${AppTexts.get('statSpd')} 95',
+              ),
+            ),
+            const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                AppTexts.get('equippedPerks'),
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(child: _Perk(icon: Icons.flash_on, name: AppTexts.get('quickStrike'))),
+                const SizedBox(width: 10),
+                Expanded(child: _Perk(icon: Icons.favorite, name: AppTexts.get('vitality'))),
+              ],
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => Navigator.pushNamed(context, '/inventory'),
+                child: Text(AppTexts.get('inventory')),
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
     return embedded
         ? content
         : Scaffold(
-      appBar: const GameHeader(titleKey: 'character'),
-      body: content,
-      bottomNavigationBar: const GameBottomNavigation(currentIndex: 3),
-    );
+            appBar: const GameHeader(titleKey: 'character'),
+            body: content,
+            bottomNavigationBar: const GameBottomNavigation(currentIndex: 3),
+          );
   }
 }
 

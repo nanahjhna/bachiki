@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/app_texts.dart';
 
 class PauseOverlay extends StatelessWidget {
   const PauseOverlay({super.key, this.onResume, this.onPause});
@@ -9,51 +10,66 @@ class PauseOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     onPause?.call();
     return Dialog(
-      backgroundColor: Colors.black54,
+      backgroundColor: Colors.transparent,
       child: Container(
         padding: const EdgeInsets.all(20),
         width: 300,
         height: 350,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: const Color(0xFF25214D),
           borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white24),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'PAUSED',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            Text(
+              AppTexts.get('pause'),
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFFFD166),
+              ),
             ),
             const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                // 팝업 닫기 (게임 재개)
-                Navigator.pop(context); onResume?.call();
-              },
-              child: const Text('게임 계속하기'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  onResume?.call();
+                },
+                child: Text(AppTexts.get('resume')),
+              ),
             ),
             const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                // 팝업을 닫고 설정 화면으로 이동
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/settings');
-              },
-              child: const Text('설정 (Settings)'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/settings');
+                },
+                child: Text(AppTexts.get('settings')),
+              ),
             ),
             const SizedBox(height: 10),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              onPressed: () {
-                // 모든 화면을 비우고 로비(메인)로 강제 복귀
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/main',
-                      (route) => false,
-                );
-              },
-              child: const Text('포기하고 로비로', style: TextStyle(color: Colors.white)),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/main',
+                    (route) => false,
+                  );
+                },
+                child: Text(
+                  AppTexts.get('quitToLobby'),
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
             ),
           ],
         ),

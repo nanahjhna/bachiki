@@ -4,38 +4,172 @@ import '../utils/app_texts.dart';
 class LobbyTab extends StatelessWidget {
   const LobbyTab({super.key});
 
+  void _showLanguageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF283593),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          '${AppTexts.get('language')} / Language',
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildLangButton(ctx, '한국어'),
+            const SizedBox(height: 8),
+            _buildLangButton(ctx, 'English'),
+            const SizedBox(height: 8),
+            _buildLangButton(ctx, '日本語'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLangButton(BuildContext ctx, String langName) {
+    final isSelected = AppTexts.currentLang == langName;
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isSelected ? const Color(0xFFFFD166) : Colors.white12,
+          foregroundColor: isSelected ? Colors.black : Colors.white,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          elevation: 0,
+        ),
+        onPressed: () async {
+          await AppTexts.setLanguage(langName);
+          if (ctx.mounted) Navigator.pop(ctx);
+        },
+        child: Text(
+          langName,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) => Stack(
     fit: StackFit.expand,
     children: [
-
       Container(color: const Color(0xFF1B183B)),
       SafeArea(
-        top: false,
+        top: true,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
-          child: Column(children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: const [
-              _Currency(icon: Icons.monetization_on_rounded, value: '1,250'),
-              _Currency(icon: Icons.bolt_rounded, value: '12'),
-            ]),
-            const SizedBox(height: 300),
-            SizedBox(width: double.infinity, child: ElevatedButton.icon(onPressed: () => Navigator.pushNamed(context, '/stageSelect'), style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFFD166), foregroundColor: Colors.black), icon: const Icon(Icons.play_arrow_rounded, size: 28), label: Text(AppTexts.get('stageBattle'), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)))),
-            const SizedBox(height: 16),
-          ]),
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: const [
+                      _Currency(icon: Icons.monetization_on_rounded, value: '1,250'),
+                      SizedBox(width: 8),
+                      _Currency(icon: Icons.bolt_rounded, value: '12'),
+                    ],
+                  ),
+                  _miniShortcut(
+                    context,
+                    Icons.language,
+                    AppTexts.get('language'),
+                    onTap: () => _showLanguageDialog(context),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 280),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () => Navigator.pushNamed(context, '/stageSelect'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFFFD166),
+                    foregroundColor: Colors.black,
+                  ),
+                  icon: const Icon(Icons.play_arrow_rounded, size: 28),
+                  label: Text(
+                    AppTexts.get('stageBattle'),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
-    Positioned(top: 82, right: 16, child: Column(children: [_miniShortcut(context, Icons.bolt, 'Quest', '/quest'), const SizedBox(height: 12), _miniShortcut(context, Icons.campaign, 'Notice', '/notice')])),
+      Positioned(
+        top: 80,
+        right: 16,
+        child: Column(
+          children: [
+            _miniShortcut(
+              context,
+              Icons.bolt,
+              AppTexts.get('quest'),
+              route: '/quest',
+            ),
+            const SizedBox(height: 12),
+            _miniShortcut(
+              context,
+              Icons.campaign,
+              AppTexts.get('notice'),
+              route: '/notice',
+            ),
+          ],
+        ),
+      ),
     ],
   );
 }
 
-Widget _miniShortcut(BuildContext context, IconData icon, String label, String route) => Tooltip(message: label, child: Material(color: const Color(0xFF2D2855), shape: const CircleBorder(), child: InkWell(customBorder: const CircleBorder(), onTap: () => Navigator.pushNamed(context, route), child: Padding(padding: const EdgeInsets.all(11), child: Icon(icon, color: const Color(0xFFFFD166))))));
+Widget _miniShortcut(
+  BuildContext context,
+  IconData icon,
+  String label, {
+  String? route,
+  VoidCallback? onTap,
+}) => Tooltip(
+  message: label,
+  child: Material(
+    color: const Color(0xFF2D2855),
+    shape: const CircleBorder(),
+    child: InkWell(
+      customBorder: const CircleBorder(),
+      onTap: onTap ?? (route != null ? () => Navigator.pushNamed(context, route) : null),
+      child: Padding(
+        padding: const EdgeInsets.all(11),
+        child: Icon(icon, color: const Color(0xFFFFD166)),
+      ),
+    ),
+  ),
+);
 
 class _Currency extends StatelessWidget {
   const _Currency({required this.icon, required this.value});
   final IconData icon;
   final String value;
   @override
-  Widget build(BuildContext context) => Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6), decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(16), border: Border.all(color: Colors.white12)), child: Row(children: [Icon(icon, color: const Color(0xFFFFD166), size: 18), const SizedBox(width: 5), Text(value, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white))]));
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+    decoration: BoxDecoration(
+      color: Colors.black54,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: Colors.white12),
+    ),
+    child: Row(
+      children: [
+        Icon(icon, color: const Color(0xFFFFD166), size: 18),
+        const SizedBox(width: 5),
+        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+      ],
+    ),
+  );
 }

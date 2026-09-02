@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import '../utils/app_texts.dart';
 
 class GameHeader extends StatelessWidget implements PreferredSizeWidget {
-  const GameHeader({super.key, required this.titleKey});
+  const GameHeader({
+    super.key,
+    required this.titleKey,
+    this.showBackButton = true,
+  });
+
   final String titleKey;
+  final bool showBackButton;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -11,17 +17,17 @@ class GameHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) => AppBar(
     automaticallyImplyLeading: false,
-    title: const SizedBox.shrink(),
-    actions: [
-      IconButton(icon: const Icon(Icons.language), tooltip: AppTexts.get('language'), onPressed: () => _showLanguageDialog(context)),
-    ],
-  );
-
-  void _showLanguageDialog(BuildContext context) => showDialog(
-    context: context,
-    builder: (dialogContext) => AlertDialog(
-      title: Text('${AppTexts.get('language')} / Language', textAlign: TextAlign.center),
-      content: Column(mainAxisSize: MainAxisSize.min, children: ['한국어', 'English', '日本語'].map((lang) => SizedBox(width: double.infinity, child: TextButton(onPressed: () async { await AppTexts.setLanguage(lang); if (dialogContext.mounted) Navigator.pop(dialogContext); }, child: Text(lang, style: TextStyle(fontWeight: AppTexts.currentLang == lang ? FontWeight.bold : FontWeight.normal))))).toList()),
+    leading: showBackButton && Navigator.of(context).canPop()
+        ? IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+            tooltip: AppTexts.get('back'),
+            onPressed: () => Navigator.pop(context),
+          )
+        : null,
+    title: Text(
+      AppTexts.get(titleKey),
+      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
     ),
+    centerTitle: true,
   );
 }
