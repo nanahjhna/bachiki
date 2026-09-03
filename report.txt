@@ -5,7 +5,7 @@
 프로젝트 이동:
 
 ```powershell
-cd "C:\Users\nanah\StudioProjects\pachiki"
+cd "C:\Users\nanah\StudioProjects\Tap-To-Beat"
 ```
 
 Antigravity 실행:
@@ -102,13 +102,13 @@ Antigravity에서는 그냥 이렇게 말하면 됩니다.
 
 
   ──────
-   📊 Pachiki (바치키) 프로젝트 종합 분석 보고서                                                                                                                                                                          
+   📊 TapToBeat (바치키) 프로젝트 종합 분석 보고서
   ──────                                                                                                                                                                                                                  
   ### 1. Flutter 프로젝트 전체 구조                                                                                                                                                                                       
                                                                                                                                                                                                                           
   본 프로젝트는 간단한 탭 액션과 스테이지 클리어 방식의 RPG / 보스 레이드 게임 프로토타입입니다.                                                                                                                          
                                                                                                                                                                                                                           
-    pachiki/                                                                                                                                                                                                              
+    TapToBeat/
     ├── assets/                                                                                                                                                                                                           
     │   ├── icon/ (앱 아이콘: icon.png)                                                                                                                                                                                   
     │   ├── images/ (비어 있음)                                                                                                                                                                                           
@@ -243,7 +243,7 @@ Antigravity에서는 그냥 이렇게 말하면 됩니다.
   1. Dart 정적 분석(Lint) 경고 11건 발생:                                                                                                                                                                                 
       • 중복 키 에러: app_texts.dart:60의 _texts 맵 내부에서 'settings' 키가 중복 선언됨 (equal_keys_in_map 경고 3건).                                                                                                    
       • 미사용 메서드: main_screen.dart:25의 _showLanguageDialog()가 선언만 되고 호출되지 않음 (GameHeader 내부 다이얼로그와 중복).                                                                                       
-      • 패키지 네이밍 규칙: pubspec.yaml의 name: Bachiki가 소문자_밑줄 규칙(bachiki)을 위반함.                                                                                                                            
+      • 패키지 네이밍 규칙: pubspec.yaml의 name: TapToBeat가 소문자_밑줄 규칙(TapToBeat)을 위반함.
       • 테스트 미사용 import: widget_test.dart:1의 material.dart 미사용.                                                                                                                                                  
   2. UI 및 비즈니스 로직 결함:                                                                                                                                                                                            
       • 인벤토리 하단 바 인덱스 불일치: inventory_view.dart:32에서 단독 화면으로 진입할 때 currentIndex: 2(상점)로 지정되어 있어 탭 표시 오류 발생 (인벤토리는 인덱스 1).                                                 

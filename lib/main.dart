@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart'; // 📌 광고 패키지 추가
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'screens/title_view.dart';
 import 'screens/main_screen.dart';
@@ -27,16 +27,16 @@ void main() async {
     await MobileAds.instance.initialize();
   }
 
-  runApp(const BachikiGameApp());
+  runApp(const TapToBeatGameApp());
 }
 
-class BachikiGameApp extends StatelessWidget {
-  const BachikiGameApp({super.key});
+class TapToBeatGameApp extends StatelessWidget {
+  const TapToBeatGameApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Bachiki',
+      title: 'TapToBeat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
